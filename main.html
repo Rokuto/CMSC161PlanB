@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<style>
+			body {margin: 0;
+				  background-image:url(black.png)
+				  overflow: hidden;}
+			canvas {width: 100%;
+					height: 100%;}
+		</style>
+	</head>
+	<body>
+		<script src="lib/three.min.js"></script>
+		<script>
+			var sceneText = [
+				"<p>There was once a sentient white cube who was believed to have existed before time itself. It was said to be an immortal, everlasting being with infinite power, with the ability to create and destroy realities whenever it willed. The following images depict the supposed events that involved the cube, from the beginning of the world all the way to its end.</p>",
+				"<p>Our story begins... literally <b>NOWHERE</b>.</p><p>In the vast and infinite emptiness where nowhere can be perceived to be, was a single white cube. Although it is scientifically and literarily impossible to describe in words exactly how this scene would have looked like, this is the best possible display that human minds can fathom without exploding.</p>",
+				"<p>This single white cube, who will now be referred to as <b>Omnia</b> (which is the Latin word for everything), existed in this infinite plane of nothingness. It is unclear whether Omnia had spent a billion years or a few seconds before it decided it wanted to use its power.</p> <p>Now, the reason that he used his power was that he was supposedly bored. An immortal, omnipotent and all-powerful being with no concept of emotion or feelings whatsoever, got bored. There is no way to prove this, so all you have is your faith to guide you.</p> <p>The first thing that Omnia created forever rippled the universe which contained only nothingness. It split the infinite plane into two opposite sides that would never meet, or get along. It created the two most basic entities in existence with by just thinking.</p>, <p>Inside Omnia's mind were the words, Let there be light.</p>",
+				"<p> And in what may seem like a tenth of a second or a million decades, suddenly a light illuminated across the plane of nothingness. A large, nearly-infinite area was now covered with light, and with it came its fated rival; it's brother; it's complete opposite: <b>darkness.</b></p> <p>In places where no light shone, darkness prevailed. This is the first instance that describes the eternal fight between light and dark: while light tried to illuminate everything in white, darkness tried to engulf everything in black and revert the universe back into a state of nothingness. This is where the concept of good and evil has evolved from, and it is the reason why white is tied to good while black represents evil.</p> <p>Omnia, now existing inside an eternal battlefield between two entities who were now just as everlasting as he was, decided to create something else.</p>",
+				"<p> Omnia, unaware of what was to happen, created a new sentient and infinite being. This being was the first known existence of water, and it was said to have existed under the moniker of Aqua. </p> <p>Aqua existed aimlessly and infinitely, taking whatever form it so pleased whenever it wanted. It was a single being living in a universe where light and darkness were fighting, however it wished no conflict so it was always on its own.</p><p>Omnia decided to create something else, something that would keep Aqua company.</p>",
+				"<p>The next thing that Omnia created was something far more powerful and devastating. It was sentient but not intelligent, and had a power far greater than what Aqua had ever possessed.</p><p>This next being was the representation of air, and it went by the name of Sky.</p><p>Sky had the strength and powers to disrupt Aqua, and it often did randomly. Because Sky had no intelligence, it would use its powers and blow gusts of wind in all directions, and this caused Aqua great pain.</p><p></p>",
+				"<p>Omnia needed a bodyguard that would protect Aqua from an uncontrollable and very powerful Sky. And that was when he created Gaia, or the embodiment of land or earth.</p><p>Land was there to make sure that the winds of Sky would not be able to harm or separate Aqua, and it did its job well. </p>",
+				"<p>After some time, the three beings along with the white cube all existed harmoniously in the infinite plane where light and darkness battled. </p><p>From the depths of Gaia and Aqua came the first organisms that would populate this new world, and that was when the world which we live in today was said to have truly begun</p>",
+				"<p>But then, Omnia got bored of everything again. So he decided to revert everything back to the way it was. And he also decided to remove himself, thus ending everything. </p><p>There was now literally nothing. No light or darkness. It is a scene which is impossible to truly be comprehended, however one may assume it was just pitch black (though this is scientifically incorrect since black is a something).</p><p><h2>THE END.</2h</p>",
+				];
+			var sceneIndex = 0;
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight);
+			var renderer = new THREE.WebGLRenderer();
+
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			renderer.setClearColor(0x000000, 1);
+			document.body.appendChild(renderer.domElement);
+
+			//if(sceneIndex >= 2){
+
+
+				var loader = new THREE.TextureLoader();
+				var space = loader.load( 'blackAndWhite.png' ); 
+
+				var bg = new THREE.Mesh(
+				  new THREE.PlaneGeometry(20, 10,4,4),
+				  new THREE.MeshBasicMaterial({map: space})
+				);
+
+				// The bg plane shouldn't care about the z-buffer.
+				bg.material.depthTest = false;
+				bg.material.depthWrite = false;
+
+				var loader1 = new THREE.TextureLoader();
+				var space1 = loader1.load( 'space.jpg' ); 
+
+				var bg1 = new THREE.Mesh(
+				  new THREE.PlaneGeometry(20, 10,4,4),
+				  new THREE.MeshBasicMaterial({map: space1})
+				);
+
+				// The bg plane shouldn't care about the z-buffer.
+				bg1.material.depthTest = false;
+				bg1.material.depthWrite = false;
+
+				var loader2 = new THREE.TextureLoader();
+				var space2 = loader2.load( 'black.jpg' ); 
+
+				var bg2 = new THREE.Mesh(
+				  new THREE.PlaneGeometry(20, 10,4,4),
+				  new THREE.MeshBasicMaterial({map: space2})
+				);
+
+				// The bg plane shouldn't care about the z-buffer.
+				bg2.material.depthTest = false;
+				bg2.material.depthWrite = false;
+
+				
+			//}
+
+			var geometry = new THREE.BoxGeometry(2,2,2);
+			var material = new THREE.MeshPhongMaterial({color: 0xffffff});
+			var cube = new THREE.Mesh(geometry, material);
+			scene.add(cube);
+
+			camera.position.z = 5;
+
+
+
+
+			var ambientLight = new THREE.AmbientLight( 0x404040 ); // soft white light
+			scene.add(ambientLight);
+
+			var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+			directionalLight.position.set(0, 0, 1);
+			scene.add(directionalLight);
+
+			var text = document.createElement('div');
+			text.style.position = 'absolute';
+			text.style.top = 0 + 'px';
+			text.style.left = 0 + 'px';
+			text.style.color = "WHITE";
+			document.body.appendChild(text);
+
+			var nextButton = document.createElement('div');
+			nextButton.innerHTML = "Next";
+			nextButton.style.position = 'absolute';
+			nextButton.style.bottom = 10 + 'px';
+			nextButton.style.left = 100 + 'px';
+			nextButton.style.color = "WHITE";
+			nextButton.onclick = function(){
+				sceneIndex++; 
+				if(sceneIndex > sceneText.length - 1) 
+					sceneIndex = sceneText.length - 1;
+			};
+			document.body.appendChild(nextButton);
+
+			var prevButton = document.createElement('div');
+			prevButton.innerHTML = "Previous";
+			prevButton.style.position = 'absolute';
+			prevButton.style.bottom = 10 + 'px';
+			prevButton.style.left = 0 + 'px';
+			prevButton.style.color = "WHITE";
+			prevButton.onclick = function(){
+				sceneIndex--;
+				if(sceneIndex < 0) 
+					sceneIndex = 0;
+			};
+			document.body.appendChild(prevButton);
+
+			var waterGeometry = new THREE.BoxGeometry(1,1,1);
+			var waterMaterial = new THREE.MeshPhongMaterial({color: 0x0000ff});
+			var waterCube = new THREE.Mesh(waterGeometry, waterMaterial);
+			waterCube.translateX(4);
+
+			var airGeometry = new THREE.BoxGeometry(1,1,1);
+			var airMaterial = new THREE.MeshPhongMaterial({color: 0xc0c0ff});
+			var airCube = new THREE.Mesh(airGeometry, airMaterial);
+			airCube.translateX(-4);
+
+			var gaiaGeometry = new THREE.BoxGeometry(1,1,1);
+			var gaiaMaterial = new THREE.MeshPhongMaterial({color: 0xf2dc96});
+			var gaiaCube = new THREE.Mesh(gaiaGeometry, gaiaMaterial);
+			gaiaCube.translateX(3);
+
+			var geometry   = new THREE.SphereGeometry(0.5, 32, 32);
+			var material  = new THREE.MeshPhongMaterial();
+			var earthMesh = new THREE.Mesh(geometry, material);
+
+			material.map = THREE.ImageUtils.loadTexture('earthmap1k.jpg');
+
+			function render(){
+				requestAnimationFrame(render);
+
+				cube.rotation.x += 0.01;
+				cube.rotation.y += 0.01;
+
+				text.innerHTML = sceneText[sceneIndex];
+
+				if (sceneIndex >= 4){
+					renderer.setClearColor(new THREE.Color().setRGB(0.8, 0.8, 0.8));
+					ambientLight.intensity = 1;
+					text.style.color = "WHITE";
+					nextButton.style.color = "WHITE";
+					prevButton.style.color = "WHITE";
+					scene.add(waterCube);
+					waterCube.rotation.x += 0.01;
+					waterCube.rotation.y += 0.01;
+				} else {
+					renderer.setClearColor(new THREE.Color().setRGB(0, 0, 0));
+					text.style.color = "GRAY";
+					nextButton.style.color = "GRAY";
+					prevButton.style.color = "GRAY";
+					scene.remove(waterCube);
+				}
+
+				if (sceneIndex == 3){
+					scene.add(bg);
+
+				}else{
+					scene.remove(bg);
+				}
+
+				if (sceneIndex >= 4){
+					scene.add(bg1);
+
+				}else{
+					scene.remove(bg1);
+				}
+
+				if(sceneIndex >= 5){
+					scene.add(airCube);
+					airCube.rotation.x += 0.01;
+					airCube.rotation.y += 0.01;
+					//airMaterial.map = THREE.ImageUtils.loadTexture('typhoon.jpg', {}, function(){ renderer.render(scene, camera); });
+					//airMaterial.needsUpdate = true;
+				}else{
+					scene.remove(airCube);
+				}
+
+				if(sceneIndex >= 6){
+					scene.add(gaiaCube);
+					gaiaCube.rotation.x += 0.01;
+					gaiaCube.rotation.y += 0.01;
+					//gaiaMaterial.map = THREE.ImageUtils.loadTexture('gaia.png', {}, function(){ renderer.render(scene, camera); });
+					//gaiaMaterial.needsUpdate = true;
+				}else{
+					scene.remove(gaiaCube);
+				}
+
+				if(sceneIndex == 7){
+					//scene.remove(gaiaCube);
+					scene.remove(airCube);
+					scene.remove(bg);
+					//scene.remove(waterCube);
+					scene.remove(cube);
+					scene.add(earthMesh);
+
+				}
+
+				if(sceneIndex == 8){
+					scene.remove(gaiaCube);
+					scene.remove(airCube);
+					scene.remove(bg);
+					scene.remove(bg1);
+					scene.remove(waterCube);
+					scene.remove(cube);
+					scene.remove(earthMesh);
+					scene.add(bg2);
+
+				}
+
+				renderer.render(scene, camera);
+			}
+
+			render();
+		</script>
+	</body>
+</html>
